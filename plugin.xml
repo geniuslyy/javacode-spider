@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="com.kingdee.spider.PerspectiveFactory"
+            id="com.kingdee.spider.perspective"
+            name="Javacode Spider">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu?after=additions">
+         <command
+               commandId="com.kingdee.spider.commands.scan"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer?after=additions">
+         <command
+               commandId="com.kingdee.spider.commands.scan"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            name="Javacode Spider Commands Category"
+            id="com.kingdee.spider.commands.category">
+      </category>
+      <command
+            name="Javacode Scan"
+            categoryId="com.kingdee.spider.commands.category"
+            id="com.kingdee.spider.commands.scan">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            commandId="com.kingdee.spider.commands.scan"
+            class="com.kingdee.spider.handlers.ScanHandler">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     operator="and">
+                  <and>
+                     <adapt
+                           type="org.eclipse.core.resources.IProject">
+                        <test
+                              property="org.eclipse.core.resources.open">
+                        </test>
+                     </adapt>
+                     <instanceof
+                           value="org.eclipse.jdt.core.IJavaProject">
+                     </instanceof>
+                  </and>
+               </iterate>
+               <count
+                     value="1">
+               </count>
+            </with>
+         </enabledWhen>
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="com.kingdee.spider.views.category"
+            name="Javacode Spider">
+      </category>
+      <view
+            category="com.kingdee.spider.views.category"
+            class="com.kingdee.spider.views.CodeScanResultView"
+            id="com.kingdee.spider.views.CodeScanResultView"
+            name="Code Scan Result"
+            restorable="true">
+      </view>
+   </extension>
+</plugin>
