@@ -19,8 +19,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.ui.IWorkbench;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
@@ -62,18 +61,20 @@ public class ScanHandler extends AbstractHandler {
 	}
 
 	private void showMessage(String message) throws PartInitException {
-		CodeScanResultView view = getView();
-		Label lblResult = view.getResultLabel();
-		lblResult.setText(message);
+		CodeScanResultView view = getActiveView();
+		Text txtResult = view.getResultText();
+		txtResult.setText(message);
 	}
 
 	/**
 	 * 如果View已加载到IWorkbenchPage中，则需要使用findView()。<br />
 	 * 如果全都调用showView()，会导致Package Explorer意外失去焦点而不去响应此界面的任何事件动作
 	 */
-	private CodeScanResultView getView() throws PartInitException {
+	private CodeScanResultView getActiveView() throws PartInitException {
 		final CodeScanResultView view = (CodeScanResultView) getActivePage().findView(PluginConstants.CODESCAN_RESULTVIEW_ID);
 		if (view != null) {
+			getActivePage().activate(view);
+			view.setFocus();
 			return view;
 		}
 		return (CodeScanResultView) getActivePage().showView(PluginConstants.CODESCAN_RESULTVIEW_ID);
