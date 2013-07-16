@@ -60,10 +60,9 @@ public class ScanHandler extends AbstractHandler {
 		showMessage(message.toString());
 	}
 
-	private void showMessage(String message) throws PartInitException {
+	private void showMessage(final String message) throws PartInitException {
 		CodeScanResultView view = getActiveView();
-		Text txtResult = view.getResultText();
-		txtResult.setText(message);
+		view.setInput(message);
 	}
 
 	/**
@@ -74,7 +73,6 @@ public class ScanHandler extends AbstractHandler {
 		final CodeScanResultView view = (CodeScanResultView) getActivePage().findView(PluginConstants.CODESCAN_RESULTVIEW_ID);
 		if (view != null) {
 			getActivePage().activate(view);
-			view.setFocus();
 			return view;
 		}
 		return (CodeScanResultView) getActivePage().showView(PluginConstants.CODESCAN_RESULTVIEW_ID);
