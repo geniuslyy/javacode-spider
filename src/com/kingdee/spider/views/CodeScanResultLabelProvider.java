@@ -1,20 +1,18 @@
 package com.kingdee.spider.views;
 
-import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-public class CodeScanResultLabelProvider extends LabelProvider implements ITableLabelProvider {
+public class CodeScanResultLabelProvider extends LabelProvider {
 
 	@Override
-	public Image getColumnImage(Object element, int columnIndex) {
-		// TODO Auto-generated method stub
-		return null;
+	public Image getImage(final Object element) {
+		return super.getImage(element);
 	}
 
 	@Override
-	public String getColumnText(Object element, int columnIndex) {
-		// TODO Auto-generated method stub
-		return null;
+	public String getText(final Object element) {
+		IJavaCodeModel javaCodeModel = (IJavaCodeModel) element;
+		return super.getText(javaCodeModel.getText());
 	}
 }

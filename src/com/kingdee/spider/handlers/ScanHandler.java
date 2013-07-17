@@ -52,9 +52,6 @@ public class ScanHandler extends AbstractHandler {
 			final ASTParser parser = ASTParser.newParser(AST.JLS4);
 			parser.setSource(compilationUnit);
 			final CompilationUnit ast = (CompilationUnit) parser.createAST(null);
-			for (final TypeDeclaration obj : (List<TypeDeclaration>) ast.types()) {
-				message.append(obj.getName() + StringUtil.LINE_SEPARATOR);
-			}
 			ast.accept(new AccessASTVisitor(message));
 		}
 		showMessage(message.toString());
@@ -62,7 +59,8 @@ public class ScanHandler extends AbstractHandler {
 
 	private void showMessage(final String message) throws PartInitException {
 		CodeScanResultView view = getActiveView();
-		view.setInput(message);
+//		view.setInput(message);
+		view.getResultText().setText(message);
 	}
 
 	/**

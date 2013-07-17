@@ -453,6 +453,7 @@ public class AccessASTVisitor extends ASTVisitor {
 
 	@Override
 	public boolean visit(TypeDeclaration node) {
+		message.append("TypeDeclaration:\t"+node.getName()+StringUtil.LINE_SEPARATOR);
 		return super.visit(node);
 	}
 
@@ -500,4 +501,6 @@ public class AccessASTVisitor extends ASTVisitor {
 	public boolean visit(WildcardType node) {
 		return super.visit(node);
 	}
+	
+	
 }
