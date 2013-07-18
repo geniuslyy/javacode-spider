@@ -16,9 +16,8 @@ public class CodeScanResultView extends ViewPart {
 
 	@Override
 	public void createPartControl(final Composite parent) {
-		txtResult = new Text(parent, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL | SWT.READ_ONLY);
-
 		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		txtResult = new Text(parent, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL | SWT.READ_ONLY);
 
 		viewer.setLabelProvider(new CodeScanResultLabelProvider());
 		viewer.setContentProvider(new CodeScanResultContentProvider());

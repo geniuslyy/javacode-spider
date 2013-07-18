@@ -16,10 +16,8 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
@@ -27,6 +25,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.kingdee.spider.PluginConstants;
+import com.kingdee.spider.model.JavaCodeBuilder;
+import com.kingdee.spider.model.TypeDeclarationCode;
 import com.kingdee.spider.views.CodeScanResultView;
 
 public class ScanHandler extends AbstractHandler {
@@ -46,20 +46,27 @@ public class ScanHandler extends AbstractHandler {
 	}
 
 	private void execute(final IJavaProject javaProject) throws JavaModelException, PartInitException {
+		final JavaCodeBuilder builder = new JavaCodeBuilder();
+
 		final ICompilationUnit[] sourceCompilationUnits = getSourceCompilationUnits(javaProject);
 		final StringBuilder message = new StringBuilder(String.format("Source files count:%d%s", sourceCompilationUnits.length, StringUtil.LINE_SEPARATOR));
 		for (final ICompilationUnit compilationUnit : sourceCompilationUnits) {
 			final ASTParser parser = ASTParser.newParser(AST.JLS4);
 			parser.setSource(compilationUnit);
 			final CompilationUnit ast = (CompilationUnit) parser.createAST(null);
-			ast.accept(new AccessASTVisitor(message));
+			ast.accept(new AccessASTVisitor(message, builder));
 		}
 		showMessage(message.toString());
+		showResult(builder.getResult());
+	}
+
+	private void showResult(List<TypeDeclarationCode> result) throws PartInitException {
+		CodeScanResultView view = getActiveView();
+		view.setInput(result);
 	}
 
 	private void showMessage(final String message) throws PartInitException {
 		CodeScanResultView view = getActiveView();
-//		view.setInput(message);
 		view.getResultText().setText(message);
 	}
 

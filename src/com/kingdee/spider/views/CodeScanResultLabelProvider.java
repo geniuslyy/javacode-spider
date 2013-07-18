@@ -3,6 +3,8 @@ package com.kingdee.spider.views;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
+import com.kingdee.spider.model.IJavaCodeElement;
+
 public class CodeScanResultLabelProvider extends LabelProvider {
 
 	@Override
@@ -12,7 +14,7 @@ public class CodeScanResultLabelProvider extends LabelProvider {
 
 	@Override
 	public String getText(final Object element) {
-		IJavaCodeModel javaCodeModel = (IJavaCodeModel) element;
+		IJavaCodeElement javaCodeModel = (IJavaCodeElement) element;
 		return super.getText(javaCodeModel.getText());
 	}
 }
